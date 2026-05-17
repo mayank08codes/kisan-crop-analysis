@@ -8,44 +8,11 @@
 
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import type { RescheduleRequest, RescheduledEvent, RescheduleResponse } from '@/types/calendar';
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 const OPENROUTER_MODEL = 'openai/gpt-4o-mini'; // Free tier model, reliable
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
-
-export interface RescheduleRequest {
-  events: Array<{
-    _id: string;
-    title: string;
-    date: string;
-    category: string;
-    startTime: string;
-    endTime: string;
-    priority: string;
-    description?: string;
-    notes?: string;
-  }>;
-  disasterDescription: string;
-  weatherAlert?: string;
-  language: string;
-  currentDate: string;
-}
-
-export interface RescheduledEvent {
-  _id: string;
-  newDate: string;
-  newStartTime: string;
-  newEndTime: string;
-  reason: string;
-  actionAdvice: string;
-}
-
-export interface RescheduleResponse {
-  summary: string;
-  rescheduledEvents: RescheduledEvent[];
-  generalAdvice: string;
-  urgencyLevel: 'low' | 'medium' | 'high' | 'critical';
-}
 
 /**
  * POST /api/calendar/events/reschedule
